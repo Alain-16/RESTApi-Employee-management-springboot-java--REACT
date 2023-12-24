@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{style.css}" rel="stylesheet">
+    <script src='https://cdn.jsdelivr.net/npm/rrule@2.6.4/dist/es5/rrule.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.8/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Employee Scheduler</h1>
+
+    <div id="calendar"></div>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+	  document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+				
+                initialView: 'dayGridMonth',
+                events: {
+                    url: '/allevents', // Replace with your actual API endpoint
+                    method: 'GET',
+                   	daysOfWeek: [ '2','4' ] ,
+                    failure: function() {
+                        alert('Error fetching employee schedules.');
+                    },
+                    color: 'blue', // Customize event color if needed
+                    textColor: 'white', // Customize event text color if needed
+                    
+                          
+                        
+                    }
+                });
+            calendar.render();	
+});
+            
+           
+            
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Employee schedule in Spring Boot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link th:href="@{main.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="header">
+    <h1><a href='https://code.daypilot.org/41760/using-javascript-html5-event-calendar-in-spring-boot-java'></a>Employee schedule in spring boot</h1>
+    <div><a href="https://javascript.daypilot.org/"></a></div>
+</div>
+
+<div class="main" style="display: flex;">
+    <div style="margin-right: 10px;">
+        <div id="nav"></div>
+    </div>
+    <div style="flex-grow: 1">
+        <div id="dp"></div>
+    </div>
+</div>
+
+<!-- DayPilot library -->
+<script src="js/daypilot/daypilot-all.min.js"></script>
+
+<script>
+
+  const datePicker = new DayPilot.Navigator("nav", {
+    showMonths: 3,
+    skipMonths: 3,
+    selectMode: "week",
+    onTimeRangeSelected: (args) => {
+      dp.startDate = args.day;
+      dp.update();
+      dp.events.load("/allevent");
+    }
+  });
+  datePicker.init();
+  
+  const calendarView = new DayPilot.Calendar("dp", {
+    viewType: "Week",
+    locale:"en-us"
+  });
+  calendarView.init();
+
+  const dp = new DayPilot.Calendar("dp", {
+    viewType: "Week",
+    onTimeRangeSelected: async (args) => {
+
+
+      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event");
+      dp.clearSelection();
+      if (modal.canceled) {
+        return;
+      }
+      const params = {
+        start: args.start,
+        end: args.end,
+        text: modal.result
+      };
+      const {data} = await DayPilot.Http.post("/api/event/create", params);
+      dp.events.add(data);
+      console.log("Event created");
+    },
+    onEventMove: async (args) => {
+      const params = {
+        id: args.e.id(),
+        start: args.newStart,
+        end: args.newEnd
+      };
+      const {data} = await DayPilot.Http.post("/api/event/move", params);
+      console.log("Event moved");
+    },
+    onEventResize: async (args) => {
+      const params = {
+        id: args.e.id(),
+        start: args.newStart,
+        end: args.newEnd
+      };
+      const {data} = await DayPilot.Http.post("/api/event/move", params);
+      console.log("Event resized");
+    },
+    onBeforeEventRender: (args) => {
+      args.data.barColor = args.data.color;
+      args.data.areas = [
+        {
+          top: 2,
+          right: 2,
+          icon: "icon-triangle-down",
+          visibility: "Visible",
+          action: "ContextMenu",
+          style: "font-size: 12px; background-color: #f9f9f9; border: 1px solid #ccc; padding: 2px 2px 0px 2px; cursor:pointer;"
+        }
+      ];
+    },
+    contextMenu: new DayPilot.Menu({
+      items: [
+        {
+          text: "Blue",
+          icon: "icon icon-blue",
+          color: "#1066a8",
+          onClick: (args) => app.updateColor(args.source, args.item.color)
+        },
+        {
+          text: "Green",
+          icon: "icon icon-green",
+          color: "#6aa84f",
+          onClick: (args) => app.updateColor(args.source, args.item.color)
+        },
+        {
+          text: "Yellow",
+          icon: "icon icon-yellow",
+          color: "#f1c232",
+          onClick: (args) => app.updateColor(args.source, args.item.color)
+        },
+        {
+          text: "Red",
+          icon: "icon icon-red",
+          color: "#cc0000",
+          onClick: (args) => app.updateColor(args.source, args.item.color)
+        },
+      ]
+    })
+  });
+  dp.init();
+
+
+  const app = {
+    init: () => {
+      dp.events.load("/api/schedule");
+    },
+    async updateColor(e, color) {
+      const params = {
+        id: e.id(),
+        color: color
+      };
+      const {data} = await DayPilot.Http.post("/api/event/color", params);
+      e.data.color = color;
+      dp.events.update(e);
+      console.log("Color updated");
+    }
+  };
+  app.init();
+
+
+</script>
+
+</body>
+</html>

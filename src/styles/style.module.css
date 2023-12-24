@@ -1,0 +1,95 @@
+.Sidebar {
+    max-width: 1200px;
+    width: 200px;
+    height: 102vh;
+    margin: 0 auto;
+    padding: 0px;
+    background-color:#C5DBDB;
+    left: 0;
+    position: fixed; 
+
+}
+.card{
+    width: 150px;
+    min-width: 150px;
+    height: 8rem;
+
+    
+}
+.card_body{
+    display: flex;
+    gap: 20px; 
+    left:125px;
+    top: 20px;
+    position: relative;  
+    z-index: -1;
+}
+.payrollCard{
+  width: 200px;
+  min-width: 150px;
+  height: 8rem;
+
+  
+}
+.payrollCard_body{
+  display: flex;
+  gap: 65px; 
+  left:125px;
+  top: 20px;
+  position: relative;  
+  z-index: -1;
+}
+.cardImg:hover{
+  transform: scale(1.2);
+}
+  .tablecard {
+    background-color: #ffffff;
+    width: 998px;
+   
+  }
+  .employeTable{
+    position:relative;
+    left: 250px;
+    margin-top: -350px;
+  }
+  .employesTable{
+    position:relative;
+    left: 250px;
+    margin-top: 50px;
+  }
+
+
+ 
+  .postionHeader{
+    width: 1095px;
+    left: 202px;
+    position: relative;
+  }
+  .nav{
+    
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  .navLinks img{
+    margin-right: 8px;
+  }
+  .logo{
+    margin-top:20px;
+    margin-left: 50px;
+  }
+  .EmployeCard {
+    display: flex;
+    gap: 50px; 
+    left:125px;
+    top: 20px;
+    position: relative;  
+    z-index: -1;
+  }
+  .Employe_card_body{
+    width: 210px;
+    min-width: 250px;
+    height: 110px;
+  }
+
+  

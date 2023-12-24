@@ -1,0 +1,16 @@
+.myHeader{
+    position: relative;
+    background-color: rgb(124, 209, 181);
+    text-align: center;
+}
+
+.myForm{
+    position: relative;
+    top: 50px;
+}
+.header1{
+    text-align: center;
+    position: relative;
+    bottom: 30px;
+    font-size: 30px;
+}

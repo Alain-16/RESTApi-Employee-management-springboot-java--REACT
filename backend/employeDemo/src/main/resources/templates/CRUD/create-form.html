@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Event</title>
+</head>
+<body>
+    <h2>Create Event</h2>
+    <form th:action="@{/create}" th:object="${scheduler}">
+		<input type="hidden" th:field="*{id}">
+        <label for="title">Event Title:</label>
+        <input type="text"  th:field="*{title}">
+        
+        <br>
+        
+        <label for="repeatingDays">Repeating Days:</label>
+        <label th:each="day, dayStat : ${daysOfWeek}" th:for="dayOfWeek" th:value="${dayStat.index + 1}">
+    <input type="checkbox" name="repeatingDays" th:value="${dayStat.index + 1}" 
+           th:checked="${repeatingDays != null and repeatingDays.contains(dayStat.index + 1)}">
+    <span th:text="${day}"></span>
+</label>
+
+        
+        <br>
+        
+        <label for="startTime">Start Time:</label>
+        <input type="datetime-local" name="startTime" th:field="*{start}">
+        
+        <br>
+        
+        <label for="endTime">End Time:</label>
+        <input type="datetime-local" name="endTime" th:field="*{end}">
+        
+        <br>
+        <label>Number of weeks</label>
+        <input type="number" name="numberOfWeeks">
+        <br>
+        <button type="submit">Create Event</button>
+    </form>
+</body>
+</html>
